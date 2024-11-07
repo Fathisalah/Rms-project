@@ -1,0 +1,839 @@
+import csv
+Imports the csv module for reading from and writing to CSV files.
+
+from datetime import datetime
+Imports the datetime class to handle date and time operations.
+
+import getpass  # for hiding the password input
+Imports the getpass module, which allows for password input without echoing characters.
+
+# Global list of authenticated users (to simulate simple login system)
+auth_users = {
+    "admin": "admin123",  # A default admin login for testing
+    "employee": "emp123"
+}
+Defines a dictionary auth_users to simulate a simple user authentication system with usernames and passwords.
+
+# Login system
+def login():
+Defines a function login() to handle user authentication.
+
+    print("\nLogin Required:")
+Prints a prompt indicating that login is required.
+
+    username = input("Enter username: ")
+Prompts the user to enter their username.
+
+    password = getpass.getpass("Enter password: ")
+Prompts the user to enter their password without displaying it on the screen.
+
+    if username in auth_users and auth_users[username] == password:
+Checks if the entered username exists in auth_users and if the associated password is correct.
+
+        print(f"Login successful! Welcome {username}.")
+Prints a success message upon successful login.
+
+        return True
+Returns True to indicate successful login.
+
+    else:
+Starts the else block for handling failed login attempts.
+
+        print("Invalid username or password.")
+Prints an error message if the username or password is incorrect.
+
+        return False
+Returns False to indicate failed login.
+
+# Contact validation for customers and employees
+def is_valid_contact(contact_info):
+Defines a function is_valid_contact(contact_info) to validate contact information.
+
+    return contact_info.isdigit() and len(contact_info) == 10
+Returns True if contact_info is composed of digits and has a length of 10; otherwise returns False.
+Customer Class
+
+class Customer:
+Begins the definition of the Customer class.
+
+    def __init__(self, customer_id, name, address, contact_info):
+Initializes a new Customer object with the given parameters.
+
+        self.customer_id = customer_id
+        self.name = name
+        self.address = address
+        self.contact_info = contact_info
+Assigns the parameters to instance variables for the customer.
+
+    def save_to_file(self):
+Defines a method to save customer information to a CSV file.
+
+        with open("customers.csv", "a", newline='') as file:
+Opens (or creates) a CSV file customers.csv in append mode.
+
+            writer = csv.writer(file)
+Creates a CSV writer object to write to the file.
+
+            writer.writerow([self.customer_id, self.name, self.address, self.contact_info])
+Writes the customer's details as a new row in the CSV file.
+
+    @staticmethod
+    def load_customers():
+Defines a static method to load customers from the CSV file.
+
+        customers = []
+Initializes an empty list to store customer objects.
+
+        try:
+Begins a try block to handle potential file reading errors.
+
+            with open("customers.csv", "r") as file:
+Opens customers.csv in read mode.
+
+                reader = csv.reader(file)
+Creates a CSV reader object to read from the file.
+
+                for row in reader:
+Iterates through each row in the CSV file.
+
+                    customers.append(Customer(*row))
+Creates a Customer object for each row and adds it to the customers list.
+
+        except FileNotFoundError:
+Begins the except block for handling file not found errors.
+
+            print("No customers found.")
+Prints a message if the customers.csv file does not exist.
+
+        return customers
+Returns the list of customers.
+Employee Class
+
+class Employee:
+Begins the definition of the Employee class.
+python
+Copy code
+    def __init__(self, employee_id, name, position, contact_info):
+Initializes a new Employee object with the given parameters.
+
+        self.employee_id = employee_id
+        self.name = name
+        self.position = position
+        self.contact_info = contact_info
+Assigns the parameters to instance variables for the employee.
+
+    def save_to_file(self):
+Defines a method to save employee information to a CSV file.
+
+        with open("employees.csv", "a", newline='') as file:
+Opens (or creates) a CSV file employees.csv in append mode.
+
+            writer = csv.writer(file)
+Creates a CSV writer object to write to the file.
+
+            writer.writerow([self.employee_id, self.name, self.position, self.contact_info])
+Writes the employee's details as a new row in the CSV file.
+
+    @staticmethod
+    def load_employees():
+Defines a static method to load employees from the CSV file.
+
+        employees = []
+Initializes an empty list to store employee objects.
+
+        try:
+Begins a try block to handle potential file reading errors.
+
+            with open("employees.csv", "r") as file:
+Opens employees.csv in read mode.
+
+                reader = csv.reader(file)
+Creates a CSV reader object to read from the file.
+
+                for row in reader:
+Iterates through each row in the CSV file.
+
+                    employees.append(Employee(*row))
+Creates an Employee object for each row and adds it to the employees list.
+
+        except FileNotFoundError:
+Begins the except block for handling file not found errors.
+
+            print("No employees found.")
+Prints a message if the employees.csv file does not exist.
+
+        return employees
+Returns the list of employees.
+MenuItem Class
+
+class MenuItem:
+Begins the definition of the MenuItem class.
+
+    def __init__(self, item_id, name, description, price):
+Initializes a new MenuItem object with the given parameters.
+python
+Copy code
+        self.item_id = item_id
+        self.name = name
+        self.description = description
+        self.price = float(price)
+Assigns the parameters to instance variables for the menu item and converts price to a float.
+
+    def save_to_file(self):
+Defines a method to save menu item information to a CSV file.
+
+        with open("menu_items.csv", "a", newline='') as file:
+
+            writer = csv.writer(file)
+Creates a CSV writer object to write to the file.
+
+            writer.writerow([self.item_id, self.name, self.description, self.price])
+Writes the menu item's details as a new row in the CSV file.
+
+    @staticmethod
+    def load_menu():
+Defines a static method to load menu items from the CSV file.
+
+        menu = []
+Initializes an empty list to store menu item objects.
+python
+Copy code
+        try:
+Begins a try block to handle potential file reading errors.
+python
+Copy code
+            with open("menu_items.csv", "r") as file:
+Opens menu_items.csv in read mode.
+python
+Copy code
+                reader = csv.reader(file)
+Creates a CSV reader object to read from the file.
+python
+Copy code
+                for row in reader:
+Iterates through each row in the CSV file.
+python
+Copy code
+                    menu.append(MenuItem(*row))
+Creates a MenuItem object for each row and adds it to the menu list.
+python
+Copy code
+        except FileNotFoundError:
+Begins the except block for handling file not found errors.
+python
+Copy code
+            print("No menu items found.")
+Prints a message if the menu_items.csv file does not exist.
+python
+Copy code
+        return menu
+Returns the list of menu items.
+Order Class
+python
+Copy code
+class Order:
+Begins the definition of the Order class.
+python
+Copy code
+    def __init__(self, order_id, customer_id, order_date, total_amount, status="pending"):
+Initializes a new Order object with the given parameters, defaulting the status to "pending".
+python
+Copy code
+        self.order_id = order_id
+        self.customer_id = customer_id
+        self.order_date = order_date
+        self.total_amount = total_amount
+        self.status = status
+Assigns the parameters to instance variables for the order.
+python
+Copy code
+    def save_to_file(self):
+Defines a method to save order information to a CSV file.
+python
+Copy code
+        with open("orders.csv", "a", newline='') as file:
+Opens (or creates) a CSV file orders.csv in append mode.
+python
+Copy code
+            writer = csv.writer(file)
+Creates a CSV writer object to write to the file.
+python
+Copy code
+            writer.writerow([self.order_id, self.customer_id, self.order_date, self.total_amount, self.status])
+Writes the order's details as a new row in the CSV file.
+python
+Copy code
+    @staticmethod
+    def load_orders():
+Defines a static method to load orders from the CSV file.
+python
+Copy code
+        orders = []
+Initializes an empty list to store order objects.
+python
+Copy code
+        try:
+Begins a try block to handle potential file reading errors.
+python
+Copy code
+            with open("orders.csv", "r") as file:
+Opens orders.csv in read mode.
+python
+Copy code
+                reader = csv.reader(file)
+Creates a CSV reader object to read from the file.
+python
+Copy code
+                for row in reader:
+Iterates through each row in the CSV file.
+python
+Copy code
+                    orders.append(Order(*row))
+Creates an Order object for each row and adds it to the orders list.
+python
+Copy code
+        except FileNotFoundError:
+Begins the except block for handling file not found errors.
+python
+Copy code
+            print("No orders found.")
+Prints a message if the orders.csv file does not exist.
+python
+Copy code
+        return orders
+Returns the list of orders.
+Payment Class
+python
+Copy code
+class Payment:
+Begins the definition of the Payment class.
+python
+Copy code
+    def __init__(self, payment_id, order_id, amount, payment_method):
+Initializes a new Payment object with the given parameters.
+python
+Copy code
+        self.payment_id = payment_id
+        self.order_id = order_id
+        self.amount = float(amount)
+        self.payment_method = payment_method
+Assigns the parameters to instance variables for the payment and converts amount to a float.
+python
+Copy code
+    def save_to_file(self):
+Defines a method to save payment information to a CSV file.
+python
+Copy code
+        with open("payments.csv", "a", newline='') as file:
+Opens (or creates) a CSV file payments.csv in append mode.
+python
+Copy code
+            writer = csv.writer(file)
+Creates a CSV writer object to write to the file.
+python
+Copy code
+            writer.writerow([self.payment_id, self.order_id, self.amount, self.payment_method])
+Writes the payment's details as a new row in the CSV file.
+python
+Copy code
+    @staticmethod
+    def load_payments():
+Defines a static method to load payments from the CSV file.
+python
+Copy code
+        payments = []
+Initializes an empty list to store payment objects.
+python
+Copy code
+        try:
+Begins a try block to handle potential file reading errors.
+python
+Copy code
+            with open("payments.csv", "r") as file:
+Opens payments.csv in read mode.
+python
+Copy code
+                reader = csv.reader(file)
+Creates a CSV reader object to read from the file.
+python
+Copy code
+                for row in reader:
+Iterates through each row in the CSV file.
+python
+Copy code
+                    payments.append(Payment(*row))
+Creates a Payment object for each row and adds it to the payments list.
+python
+Copy code
+        except FileNotFoundError:
+Begins the except block for handling file not found errors.
+python
+Copy code
+            print("No payments found.")
+Prints a message if the payments.csv file does not exist.
+python
+Copy code
+        return payments
+Returns the list of payments.
+OrderDetail Class
+python
+Copy code
+class OrderDetail:
+Begins the definition of the OrderDetail class.
+python
+Copy code
+    def __init__(self, order_id, item_id, quantity):
+Initializes a new OrderDetail object with the given parameters.
+python
+Copy code
+        self.order_id = order_id
+        self.item_id = item_id
+        self.quantity = quantity
+Assigns the parameters to instance variables for the order detail.
+python
+Copy code
+    def save_to_file(self):
+Defines a method to save order details to a CSV file.
+python
+Copy code
+        with open("order_details.csv", "a", newline='') as file:
+Opens (or creates) a CSV file order_details.csv in append mode.
+python
+Copy code
+            writer = csv.writer(file)
+Creates a CSV writer object to write to the file.
+python
+Copy code
+            writer.writerow([self.order_id, self.item_id, self.quantity])
+Writes the order details as a new row in the CSV file.
+Main Functionalities
+
+def display_menu():
+Defines a function to display the main menu options.
+
+    print("\n--- Restaurant Management System ---")
+Prints a header for the restaurant management system.
+
+    print("1. Add Customer")
+    print("2. View Customers")
+    print("3. Add Menu Item")
+    print("4. View Menu")
+    print("5. Place Order")
+    print("6. View Orders")
+    print("7. Manage Inventory")
+    print("8. View Payments")
+    print("9. Add Employee")
+    print("10. Generate Sales Report")
+    print("11. Exit")
+Displays the list of available actions to the user.
+Adding a Customer
+python
+Copy code
+def add_customer():
+Defines a function to add a new customer.
+python
+Copy code
+    if login():
+Checks if the user is logged in.
+python
+Copy code
+        customer_id = input("Enter customer ID: ")
+Prompts the user to enter a customer ID.
+python
+Copy code
+        name = input("Enter customer name: ")
+Prompts the user to enter the customer's name.
+python
+Copy code
+        address = input("Enter customer address: ")
+Prompts the user to enter the customer's address.
+python
+Copy code
+        contact_info = input("Enter customer contact info (10-digit number): ")
+Prompts the user to enter the customer's contact information.
+python
+Copy code
+        if not is_valid_contact(contact_info):
+Checks if the contact information is valid.
+python
+Copy code
+            print("Invalid contact number. Must be 10 digits.")
+Prints an error message if the contact number is invalid.
+python
+Copy code
+            return
+Exits the function if contact number validation fails.
+python
+Copy code
+        customer = Customer(customer_id, name, address, contact_info)
+Creates a new Customer object with the provided details.
+python
+Copy code
+        customer.save_to_file()
+Saves the new customer to the CSV file.
+python
+Copy code
+        print(f"Customer {name} added successfully!")
+Prints a success message after adding the customer.
+Viewing Customers
+python
+Copy code
+def view_customers():
+Defines a function to view all customers.
+python
+Copy code
+    if login():
+Checks if the user is logged in.
+python
+Copy code
+        customers = Customer.load_customers()
+Loads customers from the CSV file.
+python
+Copy code
+        for customer in customers:
+Iterates through each customer in the list.
+python
+Copy code
+            print(f"ID: {customer.customer_id}, Name: {customer.name}, Address: {customer.address}, Contact: {customer.contact_info}")
+Prints the details of each customer.
+Adding a Menu Item
+python
+Copy code
+def add_menu_item():
+Defines a function to add a new menu item.
+python
+Copy code
+    if login():
+Checks if the user is logged in.
+python
+Copy code
+        item_id = input("Enter menu item ID: ")
+Prompts the user to enter a menu item ID.
+python
+Copy code
+        name = input("Enter menu item name: ")
+Prompts the user to enter the name of the menu item.
+python
+Copy code
+        description = input("Enter menu item description: ")
+Prompts the user to enter a description of the menu item.
+python
+Copy code
+        price = input("Enter menu item price: ")
+Prompts the user to enter the price of the menu item.
+python
+Copy code
+        menu_item = MenuItem(item_id, name, description, price)
+Creates a new MenuItem object with the provided details.
+python
+Copy code
+        menu_item.save_to_file()
+Saves the new menu item to the CSV file.
+python
+Copy code
+        print(f"Menu item {name} added successfully!")
+Prints a success message after adding the menu item.
+Viewing Menu
+python
+Copy code
+def view_menu():
+Defines a function to view all menu items.
+python
+Copy code
+    if login():
+Checks if the user is logged in.
+python
+Copy code
+        menu = MenuItem.load_menu()
+Loads menu items from the CSV file.
+python
+Copy code
+        for item in menu:
+Iterates through each menu item in the list.
+python
+Copy code
+            print(f"ID: {item.item_id}, Name: {item.name}, Description: {item.description}, Price: ${item.price:.2f}")
+Prints the details of each menu item.
+Placing an Order
+python
+Copy code
+def place_order():
+Defines a function to place a new order.
+python
+Copy code
+    if login():
+Checks if the user is logged in.
+python
+Copy code
+        order_id = input("Enter order ID: ")
+Prompts the user to enter an order ID.
+python
+Copy code
+        customer_id = input("Enter customer ID: ")
+Prompts the user to enter a customer ID.
+python
+Copy code
+        order_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+Sets the order date to the current date and time in a specific format.
+python
+Copy code
+        total_amount = 0
+Initializes the total amount of the order to zero.
+python
+Copy code
+        while True:
+Starts an infinite loop for adding menu items to the order.
+python
+Copy code
+            item_id = input("Enter menu item ID (or 'done' to finish): ")
+Prompts the user to enter a menu item ID or 'done' to finish the order.
+python
+Copy code
+            if item_id.lower() == 'done':
+Checks if the user has entered 'done'.
+python
+Copy code
+                break
+Exits the loop if 'done' is entered.
+python
+Copy code
+            quantity = int(input("Enter quantity: "))
+Prompts the user to enter the quantity of the menu item.
+python
+Copy code
+            menu_items = MenuItem.load_menu()
+Loads menu items from the CSV file.
+python
+Copy code
+            for item in menu_items:
+Iterates through each menu item in the list.
+python
+Copy code
+                if item.item_id == item_id:
+Checks if the entered item ID matches an item in the menu.
+python
+Copy code
+                    total_amount += item.price * quantity
+Updates the total amount by adding the price of the item multiplied by the quantity.
+python
+Copy code
+                    order_detail = OrderDetail(order_id, item_id, quantity)
+Creates a new OrderDetail object with the order ID, item ID, and quantity.
+python
+Copy code
+                    order_detail.save_to_file()
+Saves the order detail to the CSV file.
+python
+Copy code
+                    print(f"Added {quantity} of {item.name} to the order.")
+Prints a message confirming the addition of the item to the order.
+python
+Copy code
+        order = Order(order_id, customer_id, order_date, total_amount)
+Creates a new Order object with the provided details.
+python
+Copy code
+        order.save_to_file()
+Saves the new order to the CSV file.
+python
+Copy code
+        print(f"Order {order_id} placed successfully!")
+Prints a success message after placing the order.
+Viewing Orders
+python
+Copy code
+def view_orders():
+Defines a function to view all orders.
+python
+Copy code
+    if login():
+Checks if the user is logged in.
+python
+Copy code
+        orders = Order.load_orders()
+Loads orders from the CSV file.
+python
+Copy code
+        for order in orders:
+Iterates through each order in the list.
+python
+Copy code
+            print(f"ID: {order.order_id}, Customer ID: {order.customer_id}, Date: {order.order_date}, Total: ${order.total_amount:.2f}, Status: {order.status}")
+Prints the details of each order.
+Adding an Employee
+python
+Copy code
+def add_employee():
+Defines a function to add a new employee.
+python
+Copy code
+    if login():
+Checks if the user is logged in.
+python
+Copy code
+        employee_id = input("Enter employee ID: ")
+Prompts the user to enter an employee ID.
+python
+Copy code
+        name = input("Enter employee name: ")
+Prompts the user to enter the employee's name.
+python
+Copy code
+        position = input("Enter employee position: ")
+Prompts the user to enter the employee's position.
+python
+Copy code
+        contact_info = input("Enter employee contact info (10-digit number): ")
+Prompts the user to enter the employee's contact information.
+python
+Copy code
+        if not is_valid_contact(contact_info):
+Checks if the contact information is valid.
+python
+Copy code
+            print("Invalid contact number. Must be 10 digits.")
+Prints an error message if the contact number is invalid.
+python
+Copy code
+            return
+Exits the function if contact number validation fails.
+python
+Copy code
+        employee = Employee(employee_id, name, position, contact_info)
+Creates a new Employee object with the provided details.
+python
+Copy code
+        employee.save_to_file()
+Saves the new employee to the CSV file.
+python
+Copy code
+        print(f"Employee {name} added successfully!")
+Prints a success message after adding the employee.
+Viewing Employees
+python
+Copy code
+def view_employees():
+Defines a function to view all employees.
+python
+Copy code
+    if login():
+Checks if the user is logged in.
+python
+Copy code
+        employees = Employee.load_employees()
+Loads employees from the CSV file.
+python
+Copy code
+        for employee in employees:
+Iterates through each employee in the list.
+python
+Copy code
+            print(f"ID: {employee.employee_id}, Name: {employee.name}, Position: {employee.position}, Contact: {employee.contact_info}")
+Prints the details of each employee.
+Generating Sales Report
+python
+Copy code
+def generate_sales_report():
+Defines a function to generate a sales report.
+python
+Copy code
+    if login():
+Checks if the user is logged in.
+python
+Copy code
+        orders = Order.load_orders()
+Loads orders from the CSV file.
+python
+Copy code
+        total_sales = sum(order.total_amount for order in orders)
+Calculates the total sales by summing the total amounts of all orders.
+python
+Copy code
+        print(f"Total Sales: ${total_sales:.2f}")
+Prints the total sales amount.
+Main Loop
+python
+Copy code
+def main():
+Defines the main function to execute the program.
+python
+Copy code
+    while True:
+Starts an infinite loop for the main program flow.
+python
+Copy code
+        display_menu()
+Calls the function to display the menu.
+python
+Copy code
+        choice = input("Select an option: ")
+Prompts the user to select an option from the menu.
+python
+Copy code
+        if choice == '1':
+            add_customer()
+Calls add_customer() if the user selects option 1.
+python
+Copy code
+        elif choice == '2':
+            view_customers()
+Calls view_customers() if the user selects option 2.
+python
+Copy code
+        elif choice == '3':
+            add_menu_item()
+Calls add_menu_item() if the user selects option 3.
+python
+Copy code
+        elif choice == '4':
+            view_menu()
+Calls view_menu() if the user selects option 4.
+python
+Copy code
+        elif choice == '5':
+            place_order()
+Calls place_order() if the user selects option 5.
+python
+Copy code
+        elif choice == '6':
+            view_orders()
+Calls view_orders() if the user selects option 6.
+python
+Copy code
+        elif choice == '7':
+            pass  # Inventory management functionality to be added
+Placeholder for inventory management functionality (currently not implemented).
+python
+Copy code
+        elif choice == '8':
+            view_payments()
+Calls view_payments() if the user selects option 8.
+python
+Copy code
+        elif choice == '9':
+            add_employee()
+Calls add_employee() if the user selects option 9.
+python
+Copy code
+        elif choice == '10':
+            generate_sales_report()
+Calls generate_sales_report() if the user selects option 10.
+python
+Copy code
+        elif choice == '11':
+            print("Exiting the system.")
+            break
+Breaks the loop and exits the program if the user selects option 11.
+python
+Copy code
+        else:
+            print("Invalid option. Please try again.")
+Prints an error message if the user selects an invalid option.
+python
+Copy code
+if __name__ == "__main__":
+Checks if the script is being run directly.
+python
+Copy code
+    main()
+Calls the main() function to start the program.
